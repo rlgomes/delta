@@ -80,10 +80,12 @@ def parse(duration, context=None):
                     end = datetime(year + whole, month, day)
 
                     # add remaining days for fraction part of year
-                    days_in_year = (datetime(year + whole, 12, 31) -
-                                    datetime(year + whole, 1, 1)).days + 1
-                    end += timedelta(days=(fraction * days_in_year) - 1)
+                    if fraction > 0:
+                        days_in_year = (datetime(year + whole, 12, 31) -
+                                        datetime(year + whole, 1, 1)).days + 1
 
+                        end += timedelta(days=(fraction * days_in_year))
+                    
                     seconds = (end - start).total_seconds()
 
                 elif key == 'months':

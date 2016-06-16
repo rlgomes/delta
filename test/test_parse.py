@@ -171,7 +171,7 @@ class ParseTest(unittest.TestCase):
         expect(parse('5.2m', context=date)).to.eq(delta)
 
     def test_1_years_parsing(self):
-        date = datetime(2016, 1, 1)
+        date = datetime(2017, 1, 1)
         delta = timedelta(days=365)
         expect(parse('1 years', context=date)).to.eq(delta)
         expect(parse('1 year', context=date)).to.eq(delta)
@@ -179,7 +179,7 @@ class ParseTest(unittest.TestCase):
         expect(parse('1y', context=date)).to.eq(delta)
 
     def test_5_years_parsing(self):
-        date = datetime(2016, 1, 1)
+        date = datetime(2017, 1, 1)
         delta = timedelta(days=365 * 5 + 1)
         expect(parse('5 years', context=date)).to.eq(delta)
         expect(parse('5 year', context=date)).to.eq(delta)
@@ -187,7 +187,7 @@ class ParseTest(unittest.TestCase):
         expect(parse('5y', context=date)).to.eq(delta)
 
     def test_fractional_years_parsing(self):
-        date = datetime(2016, 1, 1)
+        date = datetime(2017, 1, 1)
         days = 365 * 2.0 + 365 / 2.0
         delta = timedelta(days=days)
         expect(parse('2.5 years', context=date)).to.eq(delta)
@@ -260,8 +260,8 @@ class ParseTest(unittest.TestCase):
         expect(parse('2m, 1w', context=date)).to.eq(delta)
 
     def test_years_and_months(self):
-        date = datetime(2016, 1, 1)
-        # 365 days in 2016 and 2017 + 31 days in January
+        date = datetime(2017, 1, 1)
+        # 365 days in 2017 and 2018 + 31 days in January
         days = 365 * 2 + 31
         delta = timedelta(days=days)
         expect(parse('2 years and 1 months', context=date)).to.eq(delta)
@@ -275,8 +275,8 @@ class ParseTest(unittest.TestCase):
 
     def test_years_months_and_weeks(self):
         date = datetime(2016, 1, 1)
-        # 365 days 2016 + 31 days in January + 2 weeks * 7 days
-        days = 365 + 31 + 7 * 2
+        # 366 days 2016 + 31 days in January + 2 weeks * 7 days
+        days = 366 + 31 + 7 * 2
         delta = timedelta(days=days)
         expect(parse('1 years and 1 month and 2 weeks', context=date)).to.eq(delta)
         expect(parse('1 years, 1 month and 2 weeks', context=date)).to.eq(delta)
@@ -286,8 +286,8 @@ class ParseTest(unittest.TestCase):
 
     def test_years_and_weeks(self):
         date = datetime(2016, 1, 1)
-        # 365 days 2016 + 2 weeks * 7 days
-        days = 365 + 7 * 2
+        # 366 days 2016 + 2 weeks * 7 days
+        days = 366 + 7 * 2
         delta = timedelta(days=days)
         expect(parse('1 years and 2 weeks', context=date)).to.eq(delta)
         expect(parse('1 year and 2 weeks', context=date)).to.eq(delta)
@@ -296,8 +296,8 @@ class ParseTest(unittest.TestCase):
 
     def test_years_weeks_and_days(self):
         date = datetime(2016, 1, 1)
-        # 365 days 2016 + 2 weeks * 7 days + 3 days
-        days = 365 + 7 * 2 + 3
+        # 366 days 2016 + 2 weeks * 7 days + 3 days
+        days = 366 + 7 * 2 + 3
         delta = timedelta(days=days)
         expect(parse('1 year, 2 weeks and 3 days', context=date)).to.eq(delta)
         expect(parse('1 year, 2 weeks, 3 days', context=date)).to.eq(delta)
@@ -306,8 +306,8 @@ class ParseTest(unittest.TestCase):
 
     def test_with_everything(self):
         date = datetime(2016, 1, 1)
-        # 365 * 2 + 31 (Jan 2016) + 29 (Feb 2016) + 2 weeks * 7 days + 3 days
-        days = 365 * 2 + 31 + 29 + 7 * 2 + 3
+        # 366 + 365 + 31 (Jan 2018) + 29 (Feb 2018) + 2 weeks * 7 days + 3 days
+        days = 366 + 365 + 31 + 29 + 7 * 2 + 3
         delta = timedelta(days=days, hours=24, minutes=25, seconds=60)
         expect(parse('2 years, 2 months, 2 weeks, 3 days, 24 hours, 25 minutes and 60 seconds', context=date)).to.eq(delta)
         expect(parse('2 year 2 months 2 weeks 3 days 24 hours 25 minutes 60 seconds', context=date)).to.eq(delta)
@@ -318,11 +318,17 @@ class ParseTest(unittest.TestCase):
         expect(parse('1 month', context=date)).to.eq(timedelta(days=31))
 
     def test_last_day_of_month_while_year_parsing(self):
-        date = datetime(2016, 1, 31)
+        date = datetime(2017, 1, 31)
         expect(parse('1 year', context=date)).to.eq(timedelta(days=365))
 
     def test_end_of_year_overflow(self):
         expect(parse('1 month', context=datetime(2016, 12, 31))).to.eq(timedelta(days=31))
+    
+    def test_days_in_year(self):
+        expect(parse('1 year', context=datetime(2001, 1, 1))).to.eq(timedelta(days=365))
+    
+    def test_days_in_leap_year(self):
+        expect(parse('1 year', context=datetime(2000, 1, 1))).to.eq(timedelta(days=366))
 
     def test_multi_year_overflow(self):
         # days in 2016 + days in 2017 + Jan of 2018 + Feb of 2018 + Mar of 2018
