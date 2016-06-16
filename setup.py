@@ -20,7 +20,7 @@ setup(
     py_modules=['deltas'],
     packages=find_packages(exclude=['test']),
 
-    license='Apache 2.0 License',
+    license='MIT',
     description='Human friendly context aware duration parsing library',
     long_description=open('README.md').read(),
 )
