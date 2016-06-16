@@ -29,7 +29,7 @@ class ParseTest(unittest.TestCase):
         expect(parse('5ms')).to.eq(delta)
 
     def test_fractional_milliseconds_parsing(self):
-        delta = timedelta(milliseconds=5, microseconds=0.3)
+        delta = timedelta(milliseconds=5, microseconds=300)
         expect(parse('5.3 milliseconds')).to.eq(delta)
         expect(parse('5.3 millisecond')).to.eq(delta)
         expect(parse('5.3 millis')).to.eq(delta)
@@ -51,7 +51,7 @@ class ParseTest(unittest.TestCase):
         expect(parse('5s')).to.eq(delta)
 
     def test_fractional_seconds_parsing(self):
-        delta = timedelta(seconds=5, milliseconds=0.3)
+        delta = timedelta(seconds=5, milliseconds=300)
         expect(parse('5.3 seconds')).to.eq(delta)
         expect(parse('5.3 second')).to.eq(delta)
         expect(parse('5.3 s')).to.eq(delta)

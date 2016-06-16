@@ -123,11 +123,11 @@ def parse(duration, context=None):
 
                 elif key == 'seconds':
                     seconds = whole
-                    milliseconds = fraction
+                    milliseconds = fraction * 1000
 
                 elif key == 'milliseconds':
                     milliseconds = whole
-                    microseconds = fraction
+                    microseconds = fraction * 1000
 
                 result += timedelta(weeks=weeks,
                                     days=days,
