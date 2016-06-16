@@ -22,5 +22,5 @@ setup(
 
     license='MIT',
     description='Human friendly context aware duration parsing library',
-    long_description=open('README.md').read(),
+    long_description='https://github.com/rlgomes/delta',
 )
