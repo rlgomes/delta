@@ -87,11 +87,15 @@ def parse(duration, context=None):
                     seconds = (end - start).total_seconds()
 
                 elif key == 'months':
+                    # when calculating relative months we do so in relation to
+                    # the first day of the month
+                    day = 1
+
                     # figure out how many whole years and left over months and
                     # then let pythons datetime do all the work
                     years = whole / 12
                     months = whole % 12
-                    
+
                     end_month = month + months
                     if end_month > 12:
                         # detect month overflow and bump the year and calculate
