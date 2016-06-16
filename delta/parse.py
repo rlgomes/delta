@@ -91,15 +91,29 @@ def parse(duration, context=None):
                     # then let pythons datetime do all the work
                     years = whole / 12
                     months = whole % 12
+                    
+                    end_month = month + months
+                    if end_month > 12:
+                        # detect month overflow and bump the year and calculate
+                        # the right end_month to use
+                        years += end_month / 12
+                        end_month = end_month % 12
+
                     start = datetime(year, month, day)
-                    end = datetime(year + years, month + months, day)
+                    end = datetime(year + years, end_month, day)
 
                     # add remaining days for fraction part of the month
                     end_year = year + years
-                    end_month = month + months
-                    _, end_day = calendar.monthrange(end_year, end_month + 1)
-                    days_in_month = (datetime(end_year, end_month + 1, end_day) -
-                                     datetime(end_year, end_month + 1, 1)).days
+                    end_month = month + months + 1
+                    if end_month > 12:
+                        # detect month overflow and bump the year and calculate
+                        # the right end_month to use
+                        end_year += end_month / 12
+                        end_month = end_month % 12
+
+                    _, end_day = calendar.monthrange(end_year, end_month)
+                    days_in_month = (datetime(end_year, end_month, end_day) -
+                                     datetime(end_year, end_month, 1)).days
 
                     end += timedelta(days=(fraction * days_in_month))
 

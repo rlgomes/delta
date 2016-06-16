@@ -312,3 +312,11 @@ class ParseTest(unittest.TestCase):
         expect(parse('2 years, 2 months, 2 weeks, 3 days, 24 hours, 25 minutes and 60 seconds', context=date)).to.eq(delta)
         expect(parse('2 year 2 months 2 weeks 3 days 24 hours 25 minutes 60 seconds', context=date)).to.eq(delta)
         expect(parse('2y 2m 2w 3d 24h 25min 60s', context=date)).to.eq(delta)
+
+    def test_end_of_year_overflow(self):
+        expect(parse('1 month', context=datetime(2016, 12, 31))).to.eq(timedelta(days=31))
+
+    def test_multi_year_overflow(self):
+        # days in 2016 + days in 2017 + Jan of 2018 + Feb of 2018 + Mar of 2018
+        delta = timedelta(days=365 + 365 + 31 + 29 + 31)
+        expect(parse('27 months', context=datetime(2016, 1, 1))).to.eq(delta)
