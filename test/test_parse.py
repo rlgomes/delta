@@ -8,7 +8,7 @@ from datetime import datetime, timedelta
 
 from robber import expect
 
-from deltas import parse
+from delta import parse
 
 class ParseTest(unittest.TestCase):
 
@@ -194,8 +194,8 @@ class ParseTest(unittest.TestCase):
         date = datetime(2016, 1, 1)
         # 365 * 2 + 31 (Jan 2016) + 29 (Feb 2016) + 2 weeks * 7 days + 3 days
         days = 365 * 2 + 31 + 29 + 7 * 2 + 3
-        delta = timedelta(days=days, hours=24, minutes=25, seconds=60)
-        expect(parse('2 years, 2 months, 2 weeks, 3 days, 24 hours, 25 minutes and 60 seconds', context=date)).to.eq(delta)
-        expect(parse('2 year 2 months 2 weeks 3 days 24 hours 25 minutes 60 seconds', context=date)).to.eq(delta)
-        expect(parse('2y 2m 2w 3d 24h 25min 60s', context=date)).to.eq(delta)
+        tdelta = timedelta(days=days, hours=24, minutes=25, seconds=60)
+        expect(parse('2 years, 2 months, 2 weeks, 3 days, 24 hours, 25 minutes and 60 seconds', context=date)).to.eq(tdelta)
+        expect(parse('2 year 2 months 2 weeks 3 days 24 hours 25 minutes 60 seconds', context=date)).to.eq(tdelta)
+        expect(parse('2y 2m 2w 3d 24h 25min 60s', context=date)).to.eq(tdelta)
 

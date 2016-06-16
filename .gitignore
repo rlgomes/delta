@@ -1,6 +1,6 @@
 /build
 /.coverage
-/deltas.egg-info/
+/delta.egg-info/
 /dist
 /.eggs
 /env
