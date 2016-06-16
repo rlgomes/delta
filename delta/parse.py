@@ -1,7 +1,7 @@
 """
 deltas parse module
 """
-
+import calendar
 import re
 
 from datetime import datetime, timedelta
@@ -13,17 +13,18 @@ def _get_duration_re():
     """
     duration_matchers = [
         ('years', 'y(ear)?s?'),
-        ('months', 'm(?!i)(onth)?s?'),
+        ('months', 'm(?!i|s)(onth)?s?'),
         ('weeks', 'w(eek)?s?'),
         ('days', 'd(ay)?s?'),
         ('hours', 'h(our)?s?'),
         ('minutes', 'min(ute)?s?'),
-        ('seconds', 's(econd)?s?')
+        ('seconds', 's(econd)?s?'),
+        ('milliseconds', '(ms|millis(econd)?s?)')
     ]
     expression = []
 
     for (key, matcher) in duration_matchers:
-        expression.append(r'(?:(?P<%s>\d+)(?:[\t ]*(?:%s)))?' % (key, matcher))
+        expression.append(r'(?:(?P<%s>\d+(\.\d+)?)(?:[\t ]*(?:%s)))?' % (key, matcher))
 
     return re.compile(r'[\t ]*(?:\,)?(?:and)?[\t ]*'.join(expression))
 
@@ -61,35 +62,79 @@ def parse(duration, context=None):
         day = context.day
 
         for (key, value) in matcher.groupdict().items():
+            weeks = 0
+            days = 0
+            hours = 0
+            minutes = 0
+            seconds = 0
+            milliseconds = 0
+            microseconds = 0
+
             if value is not None:
-                value = int(value)
+                value = float(value)
+                whole = int(value)
+                fraction = abs(whole - value)
+
                 if key == 'years':
                     start = datetime(year, month, day)
-                    end = datetime(year + value, month, day) - timedelta(days=1)
-                    result += end - start
+                    end = datetime(year + whole, month, day)
+
+                    # add remaining days for fraction part of year
+                    days_in_year = (datetime(year + whole, 12, 31) -
+                                    datetime(year + whole, 1, 1)).days + 1
+                    end += timedelta(days=(fraction * days_in_year) - 1)
+
+                    seconds = (end - start).total_seconds()
 
                 elif key == 'months':
                     # figure out how many whole years and left over months and
                     # then let pythons datetime do all the work
-                    years = value / 12
-                    months = value % 12
+                    years = whole / 12
+                    months = whole % 12
                     start = datetime(year, month, day)
                     end = datetime(year + years, month + months, day)
-                    result += end - start
+
+                    # add remaining days for fraction part of the month
+                    end_year = year + years
+                    end_month = month + months
+                    _, end_day = calendar.monthrange(end_year, end_month + 1)
+                    days_in_month = (datetime(end_year, end_month + 1, end_day) -
+                                     datetime(end_year, end_month + 1, 1)).days
+
+                    end += timedelta(days=(fraction * days_in_month))
+
+                    seconds = (end - start).total_seconds()
 
                 elif key == 'weeks':
-                    result += timedelta(weeks=value)
+                    weeks = whole
+                    days = fraction * 7
 
                 elif key == 'days':
-                    result += timedelta(days=value)
+                    days = whole
+                    hours = fraction * 24
 
                 elif key == 'hours':
-                    result += timedelta(hours=value)
+                    hours = whole
+                    minutes = fraction * 60
 
                 elif key == 'minutes':
-                    result += timedelta(minutes=value)
+                    minutes = whole
+                    seconds = fraction * 60
 
                 elif key == 'seconds':
-                    result += timedelta(seconds=value)
+                    seconds = whole
+                    milliseconds = fraction
+
+                elif key == 'milliseconds':
+                    milliseconds = whole
+                    microseconds = fraction
+
+                result += timedelta(weeks=weeks,
+                                    days=days,
+                                    hours=hours,
+                                    minutes=minutes,
+                                    seconds=seconds,
+                                    milliseconds=milliseconds,
+                                    microseconds=microseconds)
 
         return result

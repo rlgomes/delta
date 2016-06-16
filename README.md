@@ -33,6 +33,7 @@ or 'and' keyword. So the following are valid duration expression:
 1 year 2 months and 3 weeks
 2 months, 3 weeks and 12 days
 1y 2m 3w 4d
+3.5 years and 2.7 days
 ```
 
 Units include:
@@ -44,6 +45,7 @@ Units include:
  * h, hour, hours
  * min, minute, minutes
  * s, second, seconds
+ * ms, millis, millisecond, milliseconds
 
 ## code sample
 
