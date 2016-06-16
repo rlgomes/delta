@@ -1,0 +1,4 @@
+[TYPECHECK]
+
+ignored-modules = expect
+ignored-classes = expect
