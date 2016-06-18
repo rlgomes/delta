@@ -13,11 +13,11 @@ def _get_duration_re():
     """
     duration_matchers = [
         ('years', 'y(ear)?s?'),
-        ('months', 'm(?!i|s)(onth)?s?'),
+        ('months', '(M|month)s?'),
         ('weeks', 'w(eek)?s?'),
         ('days', 'd(ay)?s?'),
         ('hours', 'h(our)?s?'),
-        ('minutes', 'min(ute)?s?'),
+        ('minutes', '(m(?!i|s)|min(ute)?s?)'),
         ('seconds', 's(econd)?s?'),
         ('milliseconds', '(ms|millis(econd)?s?)')
     ]

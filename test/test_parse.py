@@ -64,6 +64,7 @@ class ParseTest(unittest.TestCase):
         expect(parse('1 mins')).to.eq(delta)
         expect(parse('1 min')).to.eq(delta)
         expect(parse('1min')).to.eq(delta)
+        expect(parse('1m')).to.eq(delta)
 
     def test_5_minutes_parsing(self):
         delta = timedelta(minutes=5)
@@ -72,6 +73,7 @@ class ParseTest(unittest.TestCase):
         expect(parse('5 mins')).to.eq(delta)
         expect(parse('5 min')).to.eq(delta)
         expect(parse('5min')).to.eq(delta)
+        expect(parse('5m')).to.eq(delta)
 
     def test_fractional_minutes_parsing(self):
         seconds = 60 * 0.3
@@ -81,6 +83,7 @@ class ParseTest(unittest.TestCase):
         expect(parse('5.3 mins')).to.eq(delta)
         expect(parse('5.3 min')).to.eq(delta)
         expect(parse('5.3min')).to.eq(delta)
+        expect(parse('5.3m')).to.eq(delta)
 
     def test_1_hours_parsing(self):
         delta = timedelta(hours=1)
@@ -153,14 +156,14 @@ class ParseTest(unittest.TestCase):
         delta = timedelta(days=31)
         expect(parse('1 months', context=date)).to.eq(delta)
         expect(parse('1 month', context=date)).to.eq(delta)
-        expect(parse('1m', context=date)).to.eq(delta)
+        expect(parse('1M', context=date)).to.eq(delta)
 
     def test_5_months_parsing(self):
         date = datetime(2016, 1, 1)
         delta = timedelta(days=152)
         expect(parse('5 months', context=date)).to.eq(delta)
         expect(parse('5 month', context=date)).to.eq(delta)
-        expect(parse('5m', context=date)).to.eq(delta)
+        expect(parse('5M', context=date)).to.eq(delta)
 
     def test_fractional_months_parsing(self):
         date = datetime(2016, 1, 1)
@@ -168,7 +171,7 @@ class ParseTest(unittest.TestCase):
         delta = timedelta(days=days)
         expect(parse('5.2 months', context=date)).to.eq(delta)
         expect(parse('5.2 month', context=date)).to.eq(delta)
-        expect(parse('5.2m', context=date)).to.eq(delta)
+        expect(parse('5.2M', context=date)).to.eq(delta)
 
     def test_1_years_parsing(self):
         date = datetime(2017, 1, 1)
@@ -256,8 +259,8 @@ class ParseTest(unittest.TestCase):
         expect(parse('2 month 1 week', context=date)).to.eq(delta)
         expect(parse('2 months 1 w', context=date)).to.eq(delta)
         expect(parse('2 month, 1 w', context=date)).to.eq(delta)
-        expect(parse('2 m, 1 w', context=date)).to.eq(delta)
-        expect(parse('2m, 1w', context=date)).to.eq(delta)
+        expect(parse('2 M, 1 w', context=date)).to.eq(delta)
+        expect(parse('2M, 1w', context=date)).to.eq(delta)
 
     def test_years_and_months(self):
         date = datetime(2017, 1, 1)
@@ -270,8 +273,8 @@ class ParseTest(unittest.TestCase):
         expect(parse('2 years 1 month', context=date)).to.eq(delta)
         expect(parse('2 year 1 month', context=date)).to.eq(delta)
         expect(parse('2 year, 1 month', context=date)).to.eq(delta)
-        expect(parse('2 y 1 m', context=date)).to.eq(delta)
-        expect(parse('2y, 1m', context=date)).to.eq(delta)
+        expect(parse('2 y 1 M', context=date)).to.eq(delta)
+        expect(parse('2y, 1M', context=date)).to.eq(delta)
 
     def test_years_months_and_weeks(self):
         date = datetime(2016, 1, 1)
@@ -281,8 +284,8 @@ class ParseTest(unittest.TestCase):
         expect(parse('1 years and 1 month and 2 weeks', context=date)).to.eq(delta)
         expect(parse('1 years, 1 month and 2 weeks', context=date)).to.eq(delta)
         expect(parse('1 year 1 month 2 weeks', context=date)).to.eq(delta)
-        expect(parse('1 y 1 m 2 w', context=date)).to.eq(delta)
-        expect(parse('1y 1m 2w', context=date)).to.eq(delta)
+        expect(parse('1 y 1 M 2 w', context=date)).to.eq(delta)
+        expect(parse('1y 1M 2w', context=date)).to.eq(delta)
 
     def test_years_and_weeks(self):
         date = datetime(2016, 1, 1)
@@ -311,7 +314,7 @@ class ParseTest(unittest.TestCase):
         delta = timedelta(days=days, hours=24, minutes=25, seconds=60)
         expect(parse('2 years, 2 months, 2 weeks, 3 days, 24 hours, 25 minutes and 60 seconds', context=date)).to.eq(delta)
         expect(parse('2 year 2 months 2 weeks 3 days 24 hours 25 minutes 60 seconds', context=date)).to.eq(delta)
-        expect(parse('2y 2m 2w 3d 24h 25min 60s', context=date)).to.eq(delta)
+        expect(parse('2y 2M 2w 3d 24h 25min 60s', context=date)).to.eq(delta)
 
     def test_last_day_of_month_while_month_parsing(self):
         date = datetime(2016, 1, 31)
