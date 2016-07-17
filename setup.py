@@ -3,7 +3,7 @@ setup.py
 """
 from setuptools import setup, find_packages
 
-__VERSION = '0.4'
+__VERSION = '0.4.1'
 
 setup(
     name='delta',
