@@ -7,26 +7,23 @@ import re
 from datetime import datetime, timedelta
 
 
-def _get_duration_re():
-    """
-    return the duration matching regular expression
-    """
-    duration_matchers = [
-        ('years', 'y(ear)?s?'),
-        ('months', '(M|month)s?'),
-        ('weeks', 'w(eek)?s?'),
-        ('days', 'd(ay)?s?'),
-        ('hours', 'h(our)?s?'),
-        ('minutes', '(m(?!i|s)|min(ute)?s?)'),
-        ('seconds', 's(econd)?s?'),
-        ('milliseconds', '(ms|millis(econd)?s?)')
-    ]
-    expression = []
+_DURATION_MATCHERS = [
+    ('years', 'y(ear)?s?'),
+    ('months', '(M|month)s?'),
+    ('weeks', 'w(eek)?s?'),
+    ('days', 'd(ay)?s?'),
+    ('hours', 'h(our)?s?'),
+    ('minutes', '(m(?!i|s)|min(ute)?s?)'),
+    ('seconds', 's(econd)?s?'),
+    ('milliseconds', '(ms|millis(econd)?s?)')
+]
+_EXPRESSION_FORMAT = r'(?:(?P<%s>\d+(\.\d+)?)(?:[\t ]*(?:%s)))?'
+_EXPRESSIONS = [
+    _EXPRESSION_FORMAT % (key, matcher) for key, matcher in _DURATION_MATCHERS
+]
 
-    for (key, matcher) in duration_matchers:
-        expression.append(r'(?:(?P<%s>\d+(\.\d+)?)(?:[\t ]*(?:%s)))?' % (key, matcher))
+_PATTERN = re.compile(r'[\t ]*(?:\,)?(?:and)?[\t ]*'.join(_EXPRESSIONS))
 
-    return re.compile(r'[\t ]*(?:\,)?(?:and)?[\t ]*'.join(expression))
 
 def parse(duration, context=None):
     """
@@ -46,7 +43,7 @@ def parse(duration, context=None):
                   months which are dependent on the "current time" you're
                   calculating the relative delta in relation to.
     """
-    matcher = _get_duration_re().match(duration)
+    matcher = _PATTERN.match(duration)
 
     if matcher is None or matcher.end() < len(duration):
         raise Exception('unsupported duration "%s"' % duration)
