@@ -68,3 +68,12 @@ tdelta = delta.parse('2 months', context=datetime(2016, 1, 1))
 The above delta calculated will take into account that the `context` is set to
 the first day of 2016 which means 2 months is 31 days from January and 29 days
 from February.
+
+## tests
+
+Tests can be run using [tox](http://tox.testrun.org).
+
+```
+pip install tox
+tox
+```

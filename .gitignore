@@ -1,5 +1,6 @@
 /build
 /.coverage
+/.tox
 /delta.egg-info/
 /dist
 /.eggs
