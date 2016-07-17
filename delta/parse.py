@@ -1,6 +1,8 @@
 """
 deltas parse module
 """
+from __future__ import division
+
 import calendar
 import re
 
@@ -82,7 +84,7 @@ def parse(duration, context=None):
                                         datetime(year + whole, 1, 1)).days + 1
 
                         end += timedelta(days=(fraction * days_in_year))
-                    
+
                     seconds = (end - start).total_seconds()
 
                 elif key == 'months':
@@ -92,14 +94,14 @@ def parse(duration, context=None):
 
                     # figure out how many whole years and left over months and
                     # then let pythons datetime do all the work
-                    years = whole / 12
+                    years = whole // 12
                     months = whole % 12
 
                     end_month = month + months
                     if end_month > 12:
                         # detect month overflow and bump the year and calculate
                         # the right end_month to use
-                        years += end_month / 12
+                        years += end_month // 12
                         end_month = end_month % 12
 
                     start = datetime(year, month, day)
@@ -111,7 +113,7 @@ def parse(duration, context=None):
                     if end_month > 12:
                         # detect month overflow and bump the year and calculate
                         # the right end_month to use
-                        end_year += end_month / 12
+                        end_year += end_month // 12
                         end_month = end_month % 12
 
                     _, end_day = calendar.monthrange(end_year, end_month)
