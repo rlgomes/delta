@@ -12,6 +12,10 @@ from delta import parse
 
 class ParseTest(unittest.TestCase):
 
+    def test_fails_when_parsing_bogus_duration(self):
+        with self.assertRaisesRegexp(Exception, 'unsupported duration "1 bogus"'):
+            parse('1 bogus')
+
     def test_1_milliseconds_parsing(self):
         delta = timedelta(milliseconds=1)
         expect(parse('1 milliseconds')).to.eq(delta)
