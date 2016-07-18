@@ -1,8 +1,6 @@
 # delta
 
-[![Build Status](https://travis-ci.org/rlgomes/delta.svg?branch=master)](https://travis-ci.org/rlgomes/delta)
-
-[![Coverage Status](https://coveralls.io/repos/github/rlgomes/delta/badge.svg?branch=master)](https://coveralls.io/github/rlgomes/delta?branch=master)
+[![Build Status](https://travis-ci.org/rlgomes/delta.svg?branch=master)](https://travis-ci.org/rlgomes/delta) [![Coverage Status](https://coveralls.io/repos/github/rlgomes/delta/badge.svg?branch=master)](https://coveralls.io/github/rlgomes/delta?branch=master)
 
 Human friendly context aware duration parsing library that can translate
 expressions such as '1 hour' to a [timedelta](https://docs.python.org/2/library/datetime.html#datetime.timedelta)
