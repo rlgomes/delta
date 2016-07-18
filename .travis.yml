@@ -10,7 +10,7 @@ script:
   - pip install coverage
   - pip install coveralls
   - coverage run setup.py test
-  - coverage report --include=delta* --show-missing --fail-under 100
+  - coverage report
 
 after_success:
   - coveralls
