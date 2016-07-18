@@ -1,6 +1,7 @@
 # delta
 
 [![Build Status](https://travis-ci.org/rlgomes/delta.svg?branch=master)](https://travis-ci.org/rlgomes/delta)
+
 [![Coverage Status](https://coveralls.io/repos/github/rlgomes/delta/badge.svg?branch=master)](https://coveralls.io/github/rlgomes/delta?branch=master)
 
 Human friendly context aware duration parsing library that can translate
